@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hujjatlarni Tekshirish - repository.gov.uz</title>
+
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* my.gov.uz style logo - blue folder with green checkmark */
+        .mygov-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mygov-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        /* Blue folder */
+        .folder-back {
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 44px;
+            height: 34px;
+            background: linear-gradient(180deg, #64B5F6 0%, #42A5F5 30%, #2196F3 100%);
+            border-radius: 0 4px 5px 5px;
+        }
+
+        .folder-tab {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            width: 20px;
+            height: 10px;
+            background: linear-gradient(180deg, #64B5F6 0%, #42A5F5 100%);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .folder-front {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            width: 40px;
+            height: 28px;
+            background: linear-gradient(180deg, #90CAF9 0%, #64B5F6 50%, #42A5F5 100%);
+            border-radius: 0 3px 4px 4px;
+        }
+
+        /* Green checkmark circle */
+        .check-circle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .check-circle svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .menu-btn {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #2196F3;
+            border-radius: 1px;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 460px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: #FFFDE7;
+            border: 1px solid #FFF59D;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .alert-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #9E9E9E;
+            line-height: 1;
+        }
+
+        .alert-text {
+            font-size: 14px;
+            color: #616161;
+            line-height: 1.5;
+            padding-right: 20px;
+        }
+
+        .alert-link {
+            color: #1976D2;
+            text-decoration: none;
+        }
+
+        .alert-link:hover {
+            text-decoration: underline;
+        }
+
+        /* PIN Section */
+        .pin-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .pin-title {
+            font-size: 16px;
+            color: #212121;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .pin-label {
+            font-size: 14px;
+            color: #757575;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .pin-input:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .pin-input.error {
+            border-color: #F44336;
+            box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+        }
+
+        .pin-input.success {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: #43A047;
+        }
+
+        .submit-btn:disabled {
+            background: #BDBDBD;
+            cursor: not-allowed;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #F44336;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* PIN Hint */
+        .pin-hint {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #EEEEEE;
+        }
+
+        .pin-hint-link {
+            color: #1976D2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .pin-hint-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Document Preview Container */
+        .preview-container {
+            margin-top: 20px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .preview-image {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #E0E0E0;
+            border-top-color: #2196F3;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 15px;
+            color: #616161;
+        }
+
+        /* Success Overlay */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(76, 175, 80, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 16px;
+            color: white;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .success-text {
+            font-size: 16px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* QR Preview Section */
+        .qr-preview {
+            margin-top: 16px;
+            background: white;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .qr-preview-header {
+            background: #F5F5F5;
+            padding: 8px 12px;
+            border-bottom: 1px solid #E0E0E0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qr-preview-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Gerb container for preview */
+        .gerb-preview {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .gerb-preview img {
+            width: 100%;
+        }
+
+        /* Document preview with logos */
+        .doc-preview-card {
+            background: white;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            padding: 16px;
+            margin-top: 16px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #E0E0E0;
+        }
+
+        .doc-mygov-small {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .doc-mygov-small .folder-icon {
+            width: 32px;
+            height: 26px;
+            background: linear-gradient(180deg, #64B5F6 0%, #2196F3 100%);
+            border-radius: 2px 4px 4px 4px;
+            position: relative;
+        }
+
+        .doc-mygov-small .folder-icon::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 0;
+            width: 14px;
+            height: 6px;
+            background: #42A5F5;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .doc-mygov-small .check-badge {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 14px;
+            height: 14px;
+            background: #43A047;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-mygov-small .check-badge svg {
+            width: 10px;
+            height: 10px;
+            fill: white;
+        }
+
+        .doc-gerb-small {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .main-container {
+                margin: 10px auto;
+            }
+
+            .pin-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="mygov-logo">
+                <div class="mygov-icon">
+                    <div class="folder-tab"></div>
+                    <div class="folder-back"></div>
+                    <div class="folder-front"></div>
+                    <div class="check-circle">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Alert Box -->
+        <div class="alert-box" id="alertBox">
+            <span class="alert-close" onclick="closeAlert()">×</span>
+            <p class="alert-text">
+                Пожалуйста пройдите авторизацию чтобы система определила вас. Если документ принадлежит вам, введения
+                ПИН кода не требуется.
+                <a href="#" class="alert-link">Нажмите здесь для авторизации</a>
+            </p>
+        </div>
+
+        <!-- PIN Section -->
+        <div class="pin-section">
+            <h2 class="pin-title">Введите PIN-код для просмотра документа</h2>
+
+            <label class="pin-label">ПИН код</label>
+            <input type="text" class="pin-input" id="pinInput" maxlength="6" placeholder="" autocomplete="off">
+
+            <p class="error-message" id="errorMessage">Noto'g'ri PIN-kod kiritildi!</p>
+
+            <button class="submit-btn" id="submitBtn" onclick="verifyPin()">Открыть</button>
+
+            <div class="pin-hint">
+                <a href="#" class="pin-hint-link">
+                    PIN-код размещается рядом с QR-кодом документа
+                </a>
+            </div>
+
+            <!-- Document Preview Card -->
+            <div class="doc-preview-card">
+                <div class="doc-preview-header">
+                    <div class="doc-mygov-small">
+                        <div class="folder-icon">
+                            <div class="check-badge">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- O'zbekiston Gerbi -->
+                    <svg class="doc-gerb-small" viewBox="0 0 100 100">
+                        <!-- Background circle -->
+                        <circle cx="50" cy="50" r="48" fill="#fff" stroke="#1565C0" stroke-width="1" />
+
+                        <!-- Outer decorative ring -->
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#FFC107" stroke-width="3" />
+
+                        <!-- Inner content area -->
+                        <circle cx="50" cy="50" r="38" fill="#E3F2FD" />
+
+                        <!-- Bird (Humo) simplified -->
+                        <path
+                            d="M50 25 C55 20, 65 22, 70 30 C73 35, 72 42, 68 48 L50 45 L32 48 C28 42, 27 35, 30 30 C35 22, 45 20, 50 25"
+                            fill="#1E88E5" opacity="0.8" />
+
+                        <!-- Sun symbol -->
+                        <circle cx="50" cy="55" r="12" fill="#FFC107" />
+                        <circle cx="50" cy="55" r="8" fill="#FFD54F" />
+
+                        <!-- Sun rays -->
+                        <g stroke="#FFC107" stroke-width="2">
+                            <line x1="50" y1="40" x2="50" y2="35" />
+                            <line x1="62" y1="47" x2="66" y2="43" />
+                            <line x1="65" y1="55" x2="70" y2="55" />
+                            <line x1="62" y1="63" x2="66" y2="67" />
+                            <line x1="50" y1="70" x2="50" y2="75" />
+                            <line x1="38" y1="63" x2="34" y2="67" />
+                            <line x1="35" y1="55" x2="30" y2="55" />
+                            <line x1="38" y1="47" x2="34" y2="43" />
+                        </g>
+
+                        <!-- Cotton and wheat decorations (simplified) -->
+                        <path d="M20 70 Q25 50, 30 65 Q35 55, 38 70" stroke="#4CAF50" stroke-width="2" fill="none" />
+                        <path d="M80 70 Q75 50, 70 65 Q65 55, 62 70" stroke="#4CAF50" stroke-width="2" fill="none" />
+
+                        <!-- Small cotton bolls -->
+                        <circle cx="22" cy="68" r="4" fill="white" stroke="#9E9E9E" />
+                        <circle cx="78" cy="68" r="4" fill="white" stroke="#9E9E9E" />
+
+                        <!-- Star -->
+                        <polygon points="50,15 52,21 58,21 53,25 55,31 50,27 45,31 47,25 42,21 48,21" fill="#FFC107" />
+                    </svg>
+                </div>
+
+                <!-- Preview content hint -->
+                <div style="text-align: center; padding: 20px 0;">
+                    <div
+                        style="width: 120px; height: 120px; margin: 0 auto; background: linear-gradient(135deg, #f5f5f5, #e0e0e0); border: 2px dashed #bbb; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="#9E9E9E">
+                            <path d="M3 3h18v2H3V3zm0 16h18v2H3v-2zm0-8h18v2H3v-2z" />
+                        </svg>
+                        <div style="font-size: 10px; color: #999; margin-top: 8px;">QR-код</div>
+                        <!-- PIN code hint -->
+                        <div
+                            style="margin-top: 6px; padding: 3px 8px; background: #FF5722; color: white; font-size: 9px; border-radius: 3px; font-weight: bold;">
+                            V2AX
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: #888; margin-top: 12px;">Hujjatni ko'rish uchun PIN-kod kiriting
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="loading-text">Hujjat yuklanmoqda...</p>
+    </div>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">✓</div>
+        <p class="success-text">Hujjat muvaffaqiyatli yuklandi!<br>PDF fayl avtomatik yuklab olinadi.</p>
+    </div>
+
+    <!-- Hidden Document Container for PDF -->
+    <div id="documentContainer" style="position: absolute; left: -9999px; top: 0;"></div>
+
+    <script>
+        // Correct PIN code
+        const CORRECT_PIN = "8362"; // Last 4 digits of document number O № 008362
+
+        // Document content (from guvohnoma.html)
+        const documentHTML = `
+            <div style="width: 210mm; min-height: 297mm; background: white; padding: 12mm 15mm; font-family: 'Times New Roman', Times, serif; position: relative; box-sizing: border-box;">
+                <!-- Timestamp -->
+                <div style="position: absolute; top: 8mm; right: 12mm; font-size: 10px; color: #333; font-style: italic;">2019-01-09 12:28:25</div>
+
+                <!-- Header -->
+                <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; padding-top: 10px;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <div style="background: linear-gradient(180deg, #1976D2 0%, #1565C0 50%, #0D47A1 100%); color: white; padding: 10px 16px; border-radius: 3px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="font-size: 22px; font-weight: bold; font-family: Arial, sans-serif; letter-spacing: -0.5px;">my.gov.uz</div>
+                            <div style="font-size: 9px; color: #FFD600; font-family: Arial, sans-serif; line-height: 1.3; margin-top: 2px;">Yagona Interaktiv<br>Davlat Xizmatlari Portali</div>
+                        </div>
+                    </div>
+
+                    <div style="width: 75px; height: 75px; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 75px; height: 75px;" viewBox="0 0 100 100">
+                            <!-- Outer gold ring -->
+                            <circle cx="50" cy="50" r="48" fill="none" stroke="#C9A227" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="46" fill="white"/>
+                            
+                            <!-- Left wheat/cotton branch -->
+                            <g transform="translate(5, 20)">
+                                <path d="M15 60 Q18 45, 20 30 Q22 20, 25 10" stroke="#2E7D32" stroke-width="1.5" fill="none"/>
+                                <path d="M18 58 Q20 48, 22 35 Q24 25, 26 15" stroke="#2E7D32" stroke-width="1" fill="none"/>
+                                <ellipse cx="24" cy="12" rx="3" ry="5" fill="#FFB300"/>
+                                <ellipse cx="22" cy="18" rx="2.5" ry="4" fill="#FFB300"/>
+                                <ellipse cx="25" cy="22" rx="2.5" ry="4" fill="#FFB300"/>
+                                <ellipse cx="23" cy="28" rx="2" ry="3.5" fill="#FFB300"/>
+                                <circle cx="17" cy="45" r="5" fill="white" stroke="#9E9E9E" stroke-width="0.5"/>
+                                <circle cx="15" cy="55" r="4" fill="white" stroke="#9E9E9E" stroke-width="0.5"/>
+                            </g>
+                            
+                            <!-- Right wheat/cotton branch -->
+                            <g transform="translate(95, 20) scale(-1, 1)">
+                                <path d="M15 60 Q18 45, 20 30 Q22 20, 25 10" stroke="#2E7D32" stroke-width="1.5" fill="none"/>
+                                <path d="M18 58 Q20 48, 22 35 Q24 25, 26 15" stroke="#2E7D32" stroke-width="1" fill="none"/>
+                                <ellipse cx="24" cy="12" rx="3" ry="5" fill="#FFB300"/>
+                                <ellipse cx="22" cy="18" rx="2.5" ry="4" fill="#FFB300"/>
+                                <ellipse cx="25" cy="22" rx="2.5" ry="4" fill="#FFB300"/>
+                                <ellipse cx="23" cy="28" rx="2" ry="3.5" fill="#FFB300"/>
+                                <circle cx="17" cy="45" r="5" fill="white" stroke="#9E9E9E" stroke-width="0.5"/>
+                                <circle cx="15" cy="55" r="4" fill="white" stroke="#9E9E9E" stroke-width="0.5"/>
+                            </g>
+                            
+                            <!-- Center content -->
+                            <circle cx="50" cy="50" r="28" fill="#E3F2FD"/>
+                            
+                            <!-- Sun -->
+                            <circle cx="50" cy="58" r="10" fill="#FFB300"/>
+                            <circle cx="50" cy="58" r="7" fill="#FFC107"/>
+                            
+                            <!-- Sun rays -->
+                            <g stroke="#FFB300" stroke-width="1.5" stroke-linecap="round">
+                                <line x1="50" y1="45" x2="50" y2="40"/>
+                                <line x1="58" y1="50" x2="63" y2="47"/>
+                                <line x1="60" y1="58" x2="66" y2="58"/>
+                                <line x1="58" y1="66" x2="63" y2="69"/>
+                                <line x1="50" y1="71" x2="50" y2="76"/>
+                                <line x1="42" y1="66" x2="37" y2="69"/>
+                                <line x1="40" y1="58" x2="34" y2="58"/>
+                                <line x1="42" y1="50" x2="37" y2="47"/>
+                            </g>
+                            
+                            <!-- Humo bird -->
+                            <path d="M50 28 C53 25, 60 26, 65 32 C68 36, 67 42, 63 47 L50 44 L37 47 C33 42, 32 36, 35 32 C40 26, 47 25, 50 28" fill="#1976D2"/>
+                            
+                            <!-- Star -->
+                            <polygon points="50,18 51.5,22 56,22 52.5,24.5 54,28.5 50,26 46,28.5 47.5,24.5 44,22 48.5,22" fill="#FFB300"/>
+                            
+                            <!-- Red ribbon -->
+                            <path d="M25 82 Q35 78, 50 80 Q65 78, 75 82" stroke="#C62828" stroke-width="3" fill="none"/>
+                            <path d="M25 86 Q35 82, 50 84 Q65 82, 75 86" stroke="#C62828" stroke-width="3" fill="none"/>
+                        </svg>
+                    </div>
+
+                    <div style="text-align: left; font-size: 11px; line-height: 1.4; max-width: 180px; font-weight: normal;">
+                        O'ZBEKISTON RESPUBLIKASI<br>
+                        VAZIRLAR MAHKAMASI<br>
+                        HUZURIDAGI TA'LIM SIFATINI<br>
+                        NAZORAT QILISH DAVLAT<br>
+                        INSPEKSIYASI
+                    </div>
+                </header>
+
+                <!-- Title -->
+                <section style="text-align: center; margin: 30px 0 25px; padding: 0 20px;">
+                    <h1 style="font-size: 12px; font-weight: bold; line-height: 1.5; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+                        XORIJIY DAVLATLARDA TA'LIM OLGANLIK TO'G'RISIDAGI HUJJATNING TAN OLINGANLIGI VA<br>
+                        NOSTRIFIKATSIYALANGANLIGI TO'G'RISIDA<br>
+                        GUVOHNOMA
+                    </h1>
+                    <div style="font-size: 14px; margin-top: 12px; font-weight: normal;">O № 008362</div>
+                </section>
+
+                <!-- Content -->
+                <section style="text-align: justify; line-height: 1.6; font-size: 12px; margin: 25px 0; text-indent: 25px; padding: 0 10px;">
+                    <p>
+                        Ushbu guvohnoma bilan ALAULOV ALISHER KARIMIDINOVICH ga MOSKVA TADBIRKORLIK VA
+                        HUQUQ INSTITUTI tomonidan 2010 Rossiya Federatsiyasi da berilgan AB6 №0433909 ma'lumot
+                        to'g'risidagi diplom O'zbekiston Respublikasida tan olinadi va " YURISPRUDENSIYA " darajasidagi
+                        oliy ma'lumot to'g'risidagi diplomga tenglashtiradi.
+                    </p>
+                </section>
+
+                <!-- Details -->
+                <section style="margin-top: 35px; font-size: 12px; line-height: 1.6; padding: 0 10px;">
+                    <p style="margin-bottom: 3px;">Davlat inspeksiyasi boshlig'i: U.Tashkenbayev</p>
+                    <p style="margin-bottom: 3px;">Ro'yxatdan o'tkazish raqami: 8441</p>
+                    <p style="margin-bottom: 3px;">Berilgan sanasi: 28.12.2018</p>
+                </section>
+
+                <!-- Footer -->
+                <footer style="position: absolute; bottom: 15mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <div style="width: 70px; height: 70px; background: #000; padding: 4px; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 62px; height: 62px; background: white; display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px; padding: 3px;">
+                                \${generateQRPattern()}
+                            </div>
+                        </div>
+                        <div style="font-size: 7px; color: #555; max-width: 350px; line-height: 1.4;">
+                            QR-код, при считывании, соответствующими программно-аппаратными средствами, содержит
+                            основную информацию о соискателе (сведения, содержащиеся в свидетельстве о регистрации),
+                            позволяющую его идентифицировать, включая адрес в сети Интернет (ссылка), указывающий на
+                            запись в соответствующем электронном информационном ресурсе.
+                        </div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold;">5870</div>
+                </footer>
+
+                <div style="position: absolute; bottom: 8mm; right: 15mm; font-size: 11px; color: #666;">1</div>
+            </div>
+        `;
+
+
+        function generateQRPattern() {
+            let pattern = '';
+            const cells = 49; // 7x7 grid
+            for (let i = 0; i < cells; i++) {
+                const isBlack = Math.random() > 0.4;
+                pattern += `<div style="background: ${isBlack ? '#000' : '#fff'};"></div>`;
+            }
+            return pattern;
+        }
+
+        function closeAlert() {
+            document.getElementById('alertBox').style.display = 'none';
+        }
+
+        function verifyPin() {
+            const pinInput = document.getElementById('pinInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const successOverlay = document.getElementById('successOverlay');
+            const submitBtn = document.getElementById('submitBtn');
+
+            const enteredPin = pinInput.value.trim();
+
+            // Reset states
+            pinInput.classList.remove('error', 'success');
+            errorMessage.classList.remove('show');
+
+            if (!enteredPin) {
+                pinInput.classList.add('error');
+                errorMessage.textContent = 'Iltimos, PIN-kod kiriting!';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (enteredPin !== CORRECT_PIN) {
+                pinInput.classList.add('error');
+                errorMessage.textContent = 'Noto\'g\'ri PIN-kod kiritildi!';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Correct PIN
+            pinInput.classList.add('success');
+            submitBtn.disabled = true;
+            loadingOverlay.classList.add('show');
+
+            // Generate and download PDF
+            setTimeout(() => {
+                generatePDF();
+            }, 1500);
+        }
+
+        function generatePDF() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const successOverlay = document.getElementById('successOverlay');
+            const container = document.getElementById('documentContainer');
+
+            // Set document content
+            container.innerHTML = documentHTML;
+
+            const element = container.firstElementChild;
+
+            const opt = {
+                margin: 0,
+                filename: 'Guvohnoma_O_008362.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                loadingOverlay.classList.remove('show');
+                successOverlay.classList.add('show');
+
+                // Hide success overlay after 3 seconds
+                setTimeout(() => {
+                    successOverlay.classList.remove('show');
+                    document.getElementById('submitBtn').disabled = false;
+                }, 3000);
+            }).catch(err => {
+                console.error('PDF generation error:', err);
+                loadingOverlay.classList.remove('show');
+                alert('Xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');
+                document.getElementById('submitBtn').disabled = false;
+            });
+        }
+
+        // Allow only numbers in PIN input
+        document.getElementById('pinInput').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Submit on Enter key
+        document.getElementById('pinInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                verifyPin();
+            }
+        });
+    </script>
+</body>
+
+</html>

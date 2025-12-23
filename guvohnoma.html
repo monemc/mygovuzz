@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guvohnoma - O № 008362</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .document {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 10mm 15mm 15mm 15mm;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        /* Header Logo Image */
+        .header-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .header-logo img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Timestamp */
+        .timestamp {
+            position: absolute;
+            top: 5mm;
+            right: 12mm;
+            font-size: 10px;
+            color: #333;
+            font-style: italic;
+        }
+
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            margin: 20px 0 20px;
+            padding: 0 20px;
+        }
+
+        .title-section h1 {
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1.5;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .doc-number {
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: normal;
+        }
+
+        /* Content */
+        .content {
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 12px;
+            margin: 20px 0;
+            text-indent: 25px;
+            padding: 0 10px;
+        }
+
+        /* Details - matching original layout */
+        .details {
+            margin-top: 30px;
+            font-size: 12px;
+            line-height: 1.8;
+            padding: 0 10px;
+        }
+
+        .details p {
+            margin-bottom: 2px;
+        }
+
+        .details .label {
+            display: inline;
+        }
+
+        .details .value {
+            display: inline;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 15mm;
+            right: 15mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .qr-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .qr-code {
+            width: 70px;
+            height: 70px;
+            background: #000;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-code-inner {
+            width: 62px;
+            height: 62px;
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 1px;
+            padding: 3px;
+        }
+
+        .qr-cell {
+            background: #000;
+        }
+
+        .qr-cell.white {
+            background: white;
+        }
+
+        .qr-text {
+            font-size: 7px;
+            color: #555;
+            max-width: 350px;
+            line-height: 1.4;
+        }
+
+        .page-number {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .page-indicator {
+            position: absolute;
+            bottom: 8mm;
+            right: 15mm;
+            font-size: 11px;
+            color: #666;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document {
+                box-shadow: none;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="document">
+        <!-- Timestamp -->
+        <div class="timestamp">2019-01-09 12:28:25</div>
+
+        <!-- Header Logo Image -->
+        <div class="header-logo">
+            <img src="image copy 2.png" alt="My.gov.uz - O'zbekiston Respublikasi Davlat Inspeksiyasi">
+        </div>
+
+        <!-- Title -->
+        <section class="title-section">
+            <h1>
+                XORIJIY DAVLATLARDA TA'LIM OLGANLIK TO'G'RISIDAGI HUJJATNING TAN OLINGANLIGI VA<br>
+                NOSTRIFIKATSIYALANGANLIGI TO'G'RISIDA<br>
+                GUVOHNOMA
+            </h1>
+            <div class="doc-number">O № 008362</div>
+        </section>
+
+        <!-- Content -->
+        <section class="content">
+            <p>
+                Ushbu guvohnoma bilan ALAULOV ALISHER KARIMIDINOVICH ga MOSKVA TADBIRKORLIK VA
+                HUQUQ INSTITUTI tomonidan 2010 Rossiya Federatsiyasi da berilgan AB6 №0433909 ma'lumot
+                to'g'risidagi diplom O'zbekiston Respublikasida tan olinadi va " YURISPRUDENSIYA " darajasidagi
+                oliy ma'lumot to'g'risidagi diplomga tenglashtiradi.
+            </p>
+        </section>
+
+        <!-- Details - matching original format -->
+        <section class="details">
+            <p><span class="label">Davlat inspeksiyasi boshlig'i:</span> <span class="value">U.Tashkenbayev</span></p>
+            <p><span class="label">Ro'yxatdan o'tkazish raqami:</span> <span class="value">8441</span></p>
+            <p><span class="label">Berilgan sanasi:</span> <span class="value">28.12.2018</span></p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="qr-section">
+                <div class="qr-code">
+                    <div class="qr-code-inner" id="qrGrid">
+                        <!-- QR pattern will be generated by JS -->
+                    </div>
+                </div>
+                <div class="qr-text">
+                    QR-код, при считывании, соответствующими программно-аппаратными средствами, содержит
+                    основную информацию о соискателе (сведения, содержащиеся в свидетельстве о регистрации),
+                    позволяющую его идентифицировать, включая адрес в сети Интернет (ссылка), указывающий на
+                    запись в соответствующем электронном информационном ресурсе, + весь документ (лицевая
+                    переводится в формат PDF с последущим преобразованием его в QR код и размещается на том
+                    месте где имеется квадрат с надписью «QR-код»)
+                </div>
+            </div>
+            <div class="page-number">5870</div>
+        </footer>
+
+        <div class="page-indicator">1</div>
+    </div>
+
+    <script>
+        // Generate QR pattern
+        const qrGrid = document.getElementById('qrGrid');
+        const cells = 64; // 8x8 grid
+
+        for (let i = 0; i < cells; i++) {
+            const cell = document.createElement('div');
+            cell.className = Math.random() > 0.45 ? 'qr-cell' : 'qr-cell white';
+            qrGrid.appendChild(cell);
+        }
+    </script>
+</body>
+
+</html>
