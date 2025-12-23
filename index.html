@@ -25,7 +25,7 @@
         /* Header */
         .header {
             background: white;
-            padding: 10px 15px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -38,90 +38,31 @@
             align-items: center;
         }
 
-        /* my.gov.uz style logo - blue folder with green checkmark */
-        .mygov-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .mygov-icon {
-            width: 48px;
-            height: 48px;
-            position: relative;
-        }
-
-        /* Blue folder */
-        .folder-back {
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 44px;
-            height: 34px;
-            background: linear-gradient(180deg, #64B5F6 0%, #42A5F5 30%, #2196F3 100%);
-            border-radius: 0 4px 5px 5px;
-        }
-
-        .folder-tab {
-            position: absolute;
-            top: 2px;
-            left: 0;
-            width: 20px;
-            height: 10px;
-            background: linear-gradient(180deg, #64B5F6 0%, #42A5F5 100%);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .folder-front {
-            position: absolute;
-            bottom: 2px;
-            left: 2px;
-            width: 40px;
-            height: 28px;
-            background: linear-gradient(180deg, #90CAF9 0%, #64B5F6 50%, #42A5F5 100%);
-            border-radius: 0 3px 4px 4px;
-        }
-
-        /* Green checkmark circle */
-        .check-circle {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .check-circle svg {
-            width: 14px;
-            height: 14px;
-            fill: white;
+        /* Logo image */
+        .logo-img {
+            height: 60px;
+            width: auto;
         }
 
         .menu-btn {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            padding: 8px;
+            gap: 6px;
+            padding: 10px;
             cursor: pointer;
         }
 
         .menu-btn span {
             display: block;
-            width: 22px;
-            height: 2px;
+            width: 28px;
+            height: 3px;
             background: #2196F3;
-            border-radius: 1px;
+            border-radius: 2px;
         }
 
         /* Main Container */
         .main-container {
-            max-width: 460px;
+            max-width: 480px;
             margin: 20px auto;
             padding: 0 15px;
         }
@@ -149,8 +90,8 @@
         .alert-text {
             font-size: 14px;
             color: #616161;
-            line-height: 1.5;
-            padding-right: 20px;
+            line-height: 1.6;
+            padding-right: 25px;
         }
 
         .alert-link {
@@ -476,18 +417,7 @@
     <!-- Header -->
     <header class="header">
         <div class="logo-container">
-            <div class="mygov-logo">
-                <div class="mygov-icon">
-                    <div class="folder-tab"></div>
-                    <div class="folder-back"></div>
-                    <div class="folder-front"></div>
-                    <div class="check-circle">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
+            <img src="image copy 4.png" alt="Logo" class="logo-img">
         </div>
         <div class="menu-btn">
             <span></span>
@@ -583,22 +513,10 @@
                     </svg>
                 </div>
 
-                <!-- Preview content hint -->
+                <!-- Document Preview Image -->
                 <div style="text-align: center; padding: 20px 0;">
-                    <div
-                        style="width: 120px; height: 120px; margin: 0 auto; background: linear-gradient(135deg, #f5f5f5, #e0e0e0); border: 2px dashed #bbb; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="#9E9E9E">
-                            <path d="M3 3h18v2H3V3zm0 16h18v2H3v-2zm0-8h18v2H3v-2z" />
-                        </svg>
-                        <div style="font-size: 10px; color: #999; margin-top: 8px;">QR-код</div>
-                        <!-- PIN code hint -->
-                        <div
-                            style="margin-top: 6px; padding: 3px 8px; background: #FF5722; color: white; font-size: 9px; border-radius: 3px; font-weight: bold;">
-                            V2AX
-                        </div>
-                    </div>
-                    <p style="font-size: 12px; color: #888; margin-top: 12px;">Hujjatni ko'rish uchun PIN-kod kiriting
-                    </p>
+                    <img src="image copy 5.png" alt="Document Preview"
+                        style="max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 </div>
             </div>
         </div>
@@ -621,7 +539,7 @@
 
     <script>
         // Correct PIN code
-        const CORRECT_PIN = "8362"; // Last 4 digits of document number O № 008362
+        const CORRECT_PIN = "1445";
 
         // Document content (from guvohnoma.html)
         const documentHTML = `
@@ -787,14 +705,14 @@
 
             if (!enteredPin) {
                 pinInput.classList.add('error');
-                errorMessage.textContent = 'Iltimos, PIN-kod kiriting!';
+                errorMessage.textContent = 'Пожалуйста, введите ПИН-код!';
                 errorMessage.classList.add('show');
                 return;
             }
 
             if (enteredPin !== CORRECT_PIN) {
                 pinInput.classList.add('error');
-                errorMessage.textContent = 'Noto\'g\'ri PIN-kod kiritildi!';
+                errorMessage.textContent = 'Неправильный ПИН код';
                 errorMessage.classList.add('show');
                 return;
             }
@@ -813,44 +731,24 @@
         function generatePDF() {
             const loadingOverlay = document.getElementById('loadingOverlay');
             const successOverlay = document.getElementById('successOverlay');
-            const container = document.getElementById('documentContainer');
 
-            // Set document content
-            container.innerHTML = documentHTML;
+            // Download the existing PDF file (rasm.pdf) as file.pdf
+            const link = document.createElement('a');
+            link.href = 'rasm.pdf';
+            link.download = 'file.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-            const element = container.firstElementChild;
+            // Show success
+            loadingOverlay.classList.remove('show');
+            successOverlay.classList.add('show');
 
-            const opt = {
-                margin: 0,
-                filename: 'Guvohnoma_O_008362.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                loadingOverlay.classList.remove('show');
-                successOverlay.classList.add('show');
-
-                // Hide success overlay after 3 seconds
-                setTimeout(() => {
-                    successOverlay.classList.remove('show');
-                    document.getElementById('submitBtn').disabled = false;
-                }, 3000);
-            }).catch(err => {
-                console.error('PDF generation error:', err);
-                loadingOverlay.classList.remove('show');
-                alert('Xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');
+            // Hide success overlay after 3 seconds
+            setTimeout(() => {
+                successOverlay.classList.remove('show');
                 document.getElementById('submitBtn').disabled = false;
-            });
+            }, 3000);
         }
 
         // Allow only numbers in PIN input
